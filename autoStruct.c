@@ -1,4 +1,5 @@
 /* 
+Giacomo Redi 5F 8/10/2025
 Esercizio - Strutture
 Scrivere un programma in C che dopo aver dichiarato una struttura denominata Auto con i seguenti
 campi: ModelloAuto, marca, cilindrata, prezzo, anno_immatricolazione, targa; determini:
