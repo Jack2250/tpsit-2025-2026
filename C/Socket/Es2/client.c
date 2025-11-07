@@ -33,10 +33,8 @@ int main(int argc, char** argv)
 
     socketfd = socket(AF_INET, SOCK_STREAM, 0);
     
-
     connect(socketfd, (struct sockaddr*)&servizio, sizeof(servizio)) 
       
-
     printf("Inserisci la stringa: ");
     scanf("%s", str);
 
@@ -52,4 +50,5 @@ int main(int argc, char** argv)
 
     close(socketfd);
     return 0;
+
 }
