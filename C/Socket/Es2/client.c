@@ -40,11 +40,11 @@ int main(int argc, char * argv){
     scanf("%c", carattere);
 
     write(socketfd, str, sizeof(str));
-    read(socketfd, str, sizeof(str));
     write(socketfd, carattere, 1);
-    read(socketfd, carattere, 1);
-
-    printf("Risposta del server... %d", nOccorenze);
+    
+    read(socketfd, str, sizeof(str)); //Riceve dal server
+    
+    printf("Risposta del server... %s", str);
 
     close(socketfd);
 
