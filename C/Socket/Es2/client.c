@@ -40,7 +40,7 @@ int main(int argc, char * argv){
     scanf("%c", carattere);
 
     write(socketfd, str, sizeof(str));
-    write(socketfd, carattere, 1);
+    write(socketfd, &carattere, 1);
     
     read(socketfd, str, sizeof(str)); //Riceve dal server
     
@@ -50,4 +50,3 @@ int main(int argc, char * argv){
 
     return 0;
 }
-
