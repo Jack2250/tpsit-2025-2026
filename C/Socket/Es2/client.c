@@ -37,7 +37,7 @@ int main(int argc, char * argv){
     scanf("%s", str);
 
     printf("Inserisci un carattere\n");
-    scanf("%c", &carattere);
+    scanf(" %c", &carattere);
 
     write(socketfd, str, sizeof(str));
     write(socketfd, &carattere, 1);
@@ -50,4 +50,5 @@ int main(int argc, char * argv){
 
     return 0;
 }
+
 
