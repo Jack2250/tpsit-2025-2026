@@ -50,9 +50,9 @@ int main (){
         
         soa = accept(socketfd, (struct sockaddr*)&addr_remoto, &fromlen);
         read(soa,s, sizeof(s));
-        printf("Stringa ricevuta: %s\n");
+        printf("Stringa ricevuta: %s\n", s);
         read(soa, &c, 1);
-        printf("Carattere ricevuto: %c\n");
+        printf("Carattere ricevuto: %c\n", c);
         
         if(contaOccorrenze > 0){
             printf("Il carattere è presente %d volta/e",contaOccorrenze(s, c));
@@ -67,3 +67,4 @@ int main (){
     
     return 0;
 }
+
