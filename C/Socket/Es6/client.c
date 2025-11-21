@@ -7,42 +7,39 @@ Client il conteggio dei numeri pari e dei numeri dispari contenuti nel vettore.
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
-#include <sys/types.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <errno.h>
-#include <ctype.h>
 #include <unistd.h>
 
 #define SERVERPORT 1450
-#define DIM 20
+#define DIM 100
 
-int main()
-{
-    struct sockaddr_in = servizio;
-    int socketfd, fromlen = sizeof(servizio), vet [DIM];
+int main() {
+    struct sockaddr_in servizio;
+    int socketfd;
+    int vet[10] = {1, 3, 6, 7, 8, 9, 11, 13, 16, 17};
     char risposta[DIM];
+
     servizio.sin_family = AF_INET;
     servizio.sin_addr.s_addr = htonl(INADDR_ANY);
     servizio.sin_port = htons(SERVERPORT);
-    
-    if((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-        printf("Chiamata fallita alla system call socket");
-        exit(0);
+
+    if ((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+        printf("chiamata alla system call socket fallita");
+        exit(1);
     }
-    
-    if((connect(socketfd, (struct sockaddr* )&servizio, &fromlen)) == -1){
-        printf("Chiamata fallita alla system call connect");
-        exit(0);
+
+    if (connect(socketfd, (struct sockaddr*)&servizio, sizeof(servizio)) == -1) {
+        printf("chiamata alla system call connect fallita");
+        exit(1);
     }
-    
+
     write(socketfd, vet, sizeof(vet));
-    
+
     read(socketfd, risposta, sizeof(risposta));
-    
-    printf("%s",risposta);
-    
+
+    printf("Risposta del server: %s\n", risposta);
+
     close(socketfd);
-    
     return 0;
 }
