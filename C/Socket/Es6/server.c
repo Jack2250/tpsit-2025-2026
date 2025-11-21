@@ -7,80 +7,77 @@ Client il conteggio dei numeri pari e dei numeri dispari contenuti nel vettore.
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
-#include <sys/types.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <errno.h>
-#include <ctype.h>
 #include <unistd.h>
 
 #define SERVERPORT 1450
-#define DIM 20
+#define DIM 100
 
-int contaPari(int vet[]){
+int contaPari(int vet[]) {
     int count = 0;
-    for(int i = 0, i < sizeof(vet); i++){
-        if((vet[i] % 2) == 0){
-            count ++;
-        }
+    for (int i = 0; i < 10; i++) {
+        if (vet[i] % 2 == 0)
+            count++;
     }
     return count;
 }
 
-int contaDispari(int vet[]){
+int contaDispari(int vet[]) {
     int count = 0;
-    for(int i = 0, i < sizeof(vet); i++){
-        if((vet[i] % 2) == 1){
-            count ++;
-        }
+    for (int i = 0; i < 10; i++) {
+        if (vet[i] % 2 != 0)
+            count++;
     }
     return count;
 }
 
+int main() {
+    struct sockaddr_in servizio;
+    int socketfd, soa;
+    int vet[10], fromlen = sizeof(servizio);
+    char risposta[100];
 
-int main()
-{
-    struct sockaddr_in = servizio;
-    int socketfd, fromlen = sizeof(servizio), vet [DIM];
-    char risposta[DIM];
     servizio.sin_family = AF_INET;
     servizio.sin_addr.s_addr = htonl(INADDR_ANY);
     servizio.sin_port = htons(SERVERPORT);
-    
-    if((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-        printf("Chiamata fallita alla system call socket");
-        exit(0);
+
+    if ((socketfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+        printf("chiamata alla system call socket fallita");
+        exit(1);
     }
-    
-    if((bind(socketfd, (struct sockaddr*)&servizio, &fromlen)) == -1){
-        printf("Chiamata fallita alla system call bind");
-        exit(0);
+
+    if (bind(socketfd, (struct sockaddr*)&servizio, sizeof(servizio)) == -1) {
+        printf("chiamata alla system call bind fallita");
+        exit(1);
     }
-    
-    if((listen(socketfd, 10)) == -1){
-        printf("Chiamata fallita alla system call listen");
-        exit(0);
+
+    if (listen(socketfd, 10) == -1) {
+        printf("chiamata alla system call listen fallita");
+        exit(1);
     }
-    
-    for(;;){
-        printf("Server in ascolto");
-        
-        if((soa = accept(socketfd, (struct sockaddr*)&servizio, &fromlen)) == -1){
-            printf("Chiamata fallita alla system call accept");
-            exit(0);
+
+
+    for (;;) {
+        printf("Server in ascolto...\n");
+
+        soa = accept(socketfd, (struct sockaddr*)&servizio, &fromlen);
+        if (soa == -1) {
+            printf("chiamata alla system call accept fallita");
+            exit(1);
         }
-        
+
         read(soa, vet, sizeof(vet));
 
-        
-        int controllo = 
-        
-        
-        
+        int pari = contaPari(vet);
+        int dispari = contaDispari(vet);
+
+        snprintf(risposta, sizeof(risposta),"Numeri pari: %d  Numeri dispari: %d",pari, dispari);
+
+        write(soa, risposta, sizeof(risposta));
 
         close(soa);
     }
-    
-    
-    return 0;   
+
+    return 0;
 }
