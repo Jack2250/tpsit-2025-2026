@@ -1,13 +1,7 @@
-/*Scrivere il codice in C di un’applicazione socket CLIENT–SERVER in cui il client invia una stringa e un codice di operazione (0, 1, 2, 3). 
-Il server, in base al codice ricevuto, restituisce:
-
-→ la stringa invertita
-→ il numero di vocali contenute
-→ la stringa contenente solo caratteri alfabetici
-→ la stringa originale con tutte le vocali rimosse
+/*Scrivere il codice in C di un’applicazione socket CLIENT–SERVER in cui il server riceve in input una stringa e, 
+dopo i controlli necessari, restituisce al client la stringa da cui sono stati rimossi tutti i caratteri duplicati consecutivi.
 */
 // SERVER
-
 #include <ctype.h>
 #include <errno.h>
 #include <netinet/in.h>
@@ -21,43 +15,14 @@ Il server, in base al codice ricevuto, restituisce:
 #define SERVERPORT 1450
 #define DIM 100
 
-int contaVocali(char *s){
-    int count = 0;
-    for(int i = 0; s[i]; i++){
-        char c = tolower(s[i]);
-        if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u')
-            count++;
-    }
-    return count;
-}
-
-void inverti(char *s){
-    int i = 0, j = strlen(s)-1;
-    while(i < j){
-        char tmp = s[i];
-        s[i] = s[j];
-        s[j] = tmp;
-        i++; j--;
-    }
-}
-
-void soloAlfabetici(char *s){
+void rimuoviDuplicati(char *str){
     int j = 0;
-    for(int i = 0; s[i]; i++){
-        if(isalpha(s[i]))
-            s[j++] = s[i];
+    for(int i = 0; str[i] != '\0'; i++){
+        if(str[i] != str[i+1]){
+            str[j++] = str[i];
+        }
     }
-    s[j] = '\0';
-}
-
-void rimuoviVocali(char *s){
-    int j = 0;
-    for(int i = 0; s[i]; i++){
-        char c = tolower(s[i]);
-        if(!(c=='a'||c=='e'||c=='i'||c=='o'||c=='u'))
-            s[j++] = s[i];
-    }
-    s[j] = '\0';
+    str[j] = '\0';
 }
 
 int main(int argc, char **argv){
@@ -69,7 +34,6 @@ int main(int argc, char **argv){
     servizio.sin_port = htons(SERVERPORT);
 
     char str[DIM];
-    int codice;
     int socketfd, soa, fromlen = sizeof(servizio);
 
     socketfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -81,28 +45,12 @@ int main(int argc, char **argv){
         fflush(stdout);
 
         soa = accept(socketfd, (struct sockaddr *)&remoto, &fromlen);
-
-        read(soa, &codice, sizeof(codice));
         read(soa, str, sizeof(str));
 
-        switch(codice){
-            case 0:
-                inverti(str);
-                break;
-            case 1:
-                sprintf(str, "Numero vocali: %d", contaVocali(str));
-                break;
-            case 2:
-                soloAlfabetici(str);
-                break;
-            case 3:
-                rimuoviVocali(str);
-                break;
-            default:
-                sprintf(str, "Errore: codice non valido");
-        }
+        rimuoviDuplicati(str);
 
         write(soa, str, sizeof(str));
+
         close(soa);
     }
 
