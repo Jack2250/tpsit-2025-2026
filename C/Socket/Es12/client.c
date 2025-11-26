@@ -37,7 +37,6 @@ int main(int argc, char **argv){
 
     printf("Inserisci una stringa: ");
     scanf("%s", str);
-    getchar();
 
     printf("Inserisci codice operazione (0-3): ");
     scanf("%d", &codice);
@@ -52,3 +51,4 @@ int main(int argc, char **argv){
     close(socketfd);
     return 0;
 }
+
